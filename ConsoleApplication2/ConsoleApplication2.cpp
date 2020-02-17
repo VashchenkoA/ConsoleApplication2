@@ -35,7 +35,7 @@ typedef struct _BOOT_NTFS
 
 int main()
 {
-    const WCHAR *fileName = L"\\\\.\\H:";
+    const WCHAR *fileName = L"\\\\.\\G:";
 
     HANDLE fileHandle = CreateFileW(
         fileName,
