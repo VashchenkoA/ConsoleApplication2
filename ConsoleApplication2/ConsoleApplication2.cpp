@@ -21,7 +21,7 @@ typedef struct _BOOT_NTFS
     UINT64  num_secs;
     UINT64  LCNofMFT;
     UINT64  LCNofMFTMirr;
-    UINT32  clustersPerMFT;
+    DWORD  clustersPerMFT;
     UINT32  clustersPerIndex;
     UINT64  volumeSerialNumber;
 } BOOT_NTFS;
