@@ -18,16 +18,11 @@ typedef struct _BOOT_NTFS
     UINT16  num_heads;
     BYTE    zeros_2[8];
     UINT32  defaultValue;
-    UINT32  num_secs;
-    BYTE    zeros_3[4];
-    UINT32  LCNofMFT;
-    BYTE    zeros_4[4];
-    UINT32  LCNofMFTMirr;
-    BYTE    zeros_5[4];
-    UINT16  clustersPerMFT; 
-    BYTE    zeros_6[2];
-    UINT16  clustersPerIndex;
-    BYTE    zeros_7[2];
+    UINT64  num_secs;
+    UINT64  LCNofMFT;
+    UINT64  LCNofMFTMirr;
+    UINT32  clustersPerMFT;
+    UINT32  clustersPerIndex;
     UINT64  volumeSerialNumber;
 } BOOT_NTFS;
 
@@ -35,7 +30,7 @@ typedef struct _BOOT_NTFS
 
 int main()
 {
-    const WCHAR *fileName = L"\\\\.\\G:";
+    const WCHAR* fileName = L"\\\\.\\H:";
 
     HANDLE fileHandle = CreateFileW(
         fileName,
@@ -49,7 +44,7 @@ int main()
 
     if (fileHandle == INVALID_HANDLE_VALUE)
     {
-        cout << "Error" << endl;
+        perror("Error: ");
     }
 
     LARGE_INTEGER sectorOffset;
@@ -64,7 +59,7 @@ int main()
 
     if (currentPosition != sectorOffset.LowPart)
     {
-        cout << "Error" << endl;
+        perror("Error: ");
     }
 
     BYTE dataBuffer[1024];
@@ -81,10 +76,10 @@ int main()
 
     if (!readResult || bytesRead != 1024)
     {
-        cout << "Error" << endl;
+        perror("Error: ");
     };
 
-    BOOT_NTFS *pBootRecord = reinterpret_cast<BOOT_NTFS*>(dataBuffer);
+    BOOT_NTFS* pBootRecord = reinterpret_cast<BOOT_NTFS*>(dataBuffer);
 
     cout << "File system type: " << pBootRecord->name << endl;
     cout << "Sector size: " << pBootRecord->sec_size << endl;
@@ -102,5 +97,4 @@ int main()
     CloseHandle(fileHandle);
 
     return 0;
-
 };
